@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import matplotlib
+matplotlib.use("TkAgg")
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 df = pd.read_csv('NYC_taxi.csv', parse_dates=['pickup_datetime'], nrows=500000)
 
@@ -50,3 +52,22 @@ def plot_lat_long(df, landmarks, points='Pickup'):
 
 plot_lat_long(df2, landmarks, points='Pickup')
 plot_lat_long(df2, landmarks, points='Drop Off')
+
+
+df['year'] = df['pickup_datetime'].dt.year
+df['month'] = df['pickup_datetime'].dt.month
+df['day'] = df['pickup_datetime'].dt.day
+df['day_of_week'] = df['pickup_datetime'].dt.dayofweek
+df['hour'] = df['pickup_datetime'].dt.hour
+
+
+
+df['day_of_week'].plot.hist(bins=np.arange(8)-0.5, ec='black', ylim=(60000, 75000))
+plt.xlabel('Day of Week (0=Monday, 6=Sunday)')
+plt.title('Day of Week Histogram')
+plt.show()
+
+df['day_of_week'].plot.hist(bins=np.arange(8)-0.5, ec='black', ylim=(60000, 75000))
+plt.xlabel('Day of Week (0=Monday, 6=Sunday)')
+plt.title('Day of Week Histogram')
+plt.show()
