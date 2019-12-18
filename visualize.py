@@ -66,9 +66,29 @@ df['hour'] = df['pickup_datetime'].dt.hour
 df['day_of_week'].plot.hist(bins=np.arange(8)-0.5, ec='black', ylim=(60000, 75000))
 plt.xlabel('Day of Week (0=Monday, 6=Sunday)')
 plt.title('Day of Week Histogram')
-plt.show()
+#plt.show()
 
 df['hour'].plot.hist(bins=24, ec='black')
 plt.title('Pickup Hour Histogram')
-plt.xlable('Hour')
+plt.xlabel('Hour')
+#plt.show()
+
+#print(df.isnull().sum())
+df = df.dropna()
+print(df.describe())
+df['fare_amount'].hist(bins=500)
+plt.xlabel("Fare")
+plt.title("Histogram of Fares")
 plt.show()
+
+df = df[(df['fare_amount'] >= 0) & (df['fare_amount'] <= 100)]
+df['passenger_count'].hist(bins=6, ec='black')
+plt.xlabel("Passenger Count")
+plt.title("Histogram of Passenger Count")
+plt.show()
+
+df.loc[df['passenger_count']==0, 'passenger_count'] = 1
+df.plot.scatter('pickup_longitude','pickup_latitude')
+plt.show()
+
+
