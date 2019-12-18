@@ -9,7 +9,7 @@ df = pd.read_csv('NYC_taxi.csv', parse_dates=['pickup_datetime'], nrows=500000)
 
 # nyc longitude
 nyc_min_longitude = -74.05
-nyc_max_longitude =--73.75
+nyc_max_longitude = -73.75
 
 # nyc latitude
 nyc_min_latitude = 40.63
