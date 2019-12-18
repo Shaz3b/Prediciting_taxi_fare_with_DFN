@@ -9,7 +9,7 @@ df = pd.read_csv('NYC_taxi.csv', parse_dates=['pickup_datetime'], nrows=500000)
 
 # nyc longitude
 nyc_min_longitude = -74.05
-nyc_max_longitude = -74.05
+nyc_max_longitude =--73.75
 
 # nyc latitude
 nyc_min_latitude = 40.63
@@ -51,6 +51,7 @@ def plot_lat_long(df, landmarks, points='Pickup'):
   plt.show()
 
 plot_lat_long(df2, landmarks, points='Pickup')
+
 plot_lat_long(df2, landmarks, points='Drop Off')
 
 
@@ -67,7 +68,7 @@ plt.xlabel('Day of Week (0=Monday, 6=Sunday)')
 plt.title('Day of Week Histogram')
 plt.show()
 
-df['day_of_week'].plot.hist(bins=np.arange(8)-0.5, ec='black', ylim=(60000, 75000))
-plt.xlabel('Day of Week (0=Monday, 6=Sunday)')
-plt.title('Day of Week Histogram')
+df['hour'].plot.hist(bins=24, ec='black')
+plt.title('Pickup Hour Histogram')
+plt.xlable('Hour')
 plt.show()
