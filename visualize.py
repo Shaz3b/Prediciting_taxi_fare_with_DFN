@@ -4,6 +4,7 @@ matplotlib.use("TkAgg")
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from utils import preprocess
 
 df = pd.read_csv('NYC_taxi.csv', parse_dates=['pickup_datetime'], nrows=500000)
 
@@ -87,8 +88,16 @@ plt.xlabel("Passenger Count")
 plt.title("Histogram of Passenger Count")
 plt.show()
 
-df.loc[df['passenger_count']==0, 'passenger_count'] = 1
-df.plot.scatter('pickup_longitude','pickup_latitude')
+df.plot.scatter('pickup_longitude', 'pickup_latitude')
 plt.show()
 
+df = preprocess(df)
+
+def euc_distance(lat1, long1, lat2, long2):
+  return(((lat1-lat2)**2 + (long1-long2)**2)**0.5)
+
+df['distance'] = euc_distance(df['pickup_latitude'], df['pickup_longitude'], df['dropoff_latitude'], df['dropoff_longitude'])
+
+df.plot.scatter('fare_amount', 'distance')
+plt.show()
 

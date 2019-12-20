@@ -11,7 +11,7 @@ def preprocess(df):
     df = df[(df['fare_amount'] >= lower_bound) & (df['fare_amount'] <= upper_bound)]
     return df
 
-  def replace_passenger_count_outliner(df):
+  def replace_passenger_count_outliers(df):
     mode = df['passenger_count'].mode()
     df.loc[df['passenger_count'] == 0, 'passenger_count'] = mode
     return df
@@ -35,7 +35,7 @@ def preprocess(df):
     return df
 
   df = remove_missing_value(df)
-  df = remove_fare_amount_outliner(df, lower_bound = 0, upper_bound = 100)
+  df = remove_fare_amount_outliers(df, lower_bound = 0, upper_bound = 100)
   df = replace_passenger_count_outliers(df)
   df = remove_lat_long_outliers(df)
   return df
