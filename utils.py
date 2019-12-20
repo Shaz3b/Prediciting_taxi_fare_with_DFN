@@ -41,39 +41,39 @@ def preprocess(df):
   return df
 
 
-  def feature_engineer(df):
-    def create_time_features(df):
-      df['year'] = df['pickup_datetime'].dt.year
-      df['month'] = df['pickup_datetime'].dt.month
-      df['day'] = df['pickup_datetime'].dt.day
-      df['day_of_week'] = df['pickup_datetime'].dt.dayofweek
-      df['hour'] = df['pickup_datetime'].dt.hour
-      df = df.drop(['pickup_datetime'], axis=1)
-      return df
-
-    def euc_distance(lat1, long1, lat2, long2):
-      return (((lat1-lat2)**2 + (long1-long2)**2)**0.5)
-
-
-    def create_pickup_dropoff_dist_features(df):
-      df['travel_distance'] = euc_distance(df['pickup_latitude'], df['pickup_longitude'], df['dropoff_logitude'])
-      return df
-
-
-    def create_airport_dist_feature(df):
-       airports = {'JFK Airport': (-73.78,40.643),
-                   'Laguardia Airport': (-73.87, 40.77),
-                   'Midtown': (-74.18, 40.69)}
-
-
-       for airport in airports:
-        df['pickup_dist_' + airport] = euc_distance(df['pickup_latitude'], df['pickup_longitude'], airports[airport[0]])
-        df['dropoff_dist_' + airport] = euc_distance(df['dropoff_latitude'], df['dropoff_longitude'], airports[airport[0]])
-       return df
-
-    df = create_time_features(df)
-    df = create_pickup_dropoff_dist_features(df)
-    df = create_airport_dist_feature(df)
-    df = df.drop(['key'], axis=1)
-    
+def feature_engineer(df):
+  def create_time_features(df):
+    df['year'] = df['pickup_datetime'].dt.year
+    df['month'] = df['pickup_datetime'].dt.month
+    df['day'] = df['pickup_datetime'].dt.day
+    df['day_of_week'] = df['pickup_datetime'].dt.dayofweek
+    df['hour'] = df['pickup_datetime'].dt.hour
+    df = df.drop(['pickup_datetime'], axis=1)
     return df
+
+  def euc_distance(lat1, long1, lat2, long2):
+    return (((lat1-lat2)**2 + (long1-long2)**2)**0.5)
+
+
+  def create_pickup_dropoff_dist_features(df):
+    df['travel_distance'] = euc_distance(df['pickup_latitude'], df['pickup_longitude'], df['dropoff_latitude'], df['dropoff_longitude'])
+    return df
+
+
+  def create_airport_dist_features(df):
+     airports = {'JFK Airport': (-73.78,40.643),
+                 'Laguardia Airport': (-73.87, 40.77),
+                 'Midtown': (-74.18, 40.69)}
+
+
+     for airport in airports:
+      df['pickup_dist_' + airport] = euc_distance(df['pickup_latitude'], df['pickup_longitude'], airports[airport][1], airports[airport][0])
+      df['dropoff_dist_' + airport] = euc_distance(df['dropoff_latitude'], df['dropoff_longitude'], airports[airport][1], airports[airport][0])
+     return df
+
+  df = create_time_features(df)
+  df = create_pickup_dropoff_dist_features(df)
+  df = create_airport_dist_features(df)
+  df = df.drop(['key'], axis=1)
+  
+  return df
